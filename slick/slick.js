@@ -1520,30 +1520,23 @@
                     imageSizes  = $(this).attr('data-sizes') || _.$slider.attr('data-sizes'),
                     imageToLoad = document.createElement('img');
 
-                imageToLoad.onload = function() {
+                imageToLoad.onload = function () {
+                    if (imageSrcSet) {
+                        image
+                            .attr('srcset', imageSrcSet);
+
+                        if (imageSizes) {
+                            image
+                                .attr('sizes', imageSizes);
+                        }
+                    }
 
                     image
-                        .animate({ opacity: 0 }, 100, function() {
-
-                            if (imageSrcSet) {
-                                image
-                                    .attr('srcset', imageSrcSet );
-
-                                if (imageSizes) {
-                                    image
-                                        .attr('sizes', imageSizes );
-                                }
-                            }
-
-                            image
-                                .attr('src', imageSource)
-                                .animate({ opacity: 1 }, 200, function() {
-                                    image
-                                        .removeAttr('data-lazy data-srcset data-sizes')
-                                        .removeClass('slick-loading');
-                                });
-                            _.$slider.trigger('lazyLoaded', [_, image, imageSource]);
-                        });
+                        .attr('src', imageSource);
+                        image
+                            .removeAttr('data-lazy data-srcset data-sizes')
+                            .removeClass('slick-loading');
+                    _.$slider.trigger('lazyLoaded', [_, image, imageSource]);
 
                 };
 
